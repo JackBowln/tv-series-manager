@@ -1,54 +1,49 @@
-// lib/apollo-client.ts
-import { ApolloClient, InMemoryCache, HttpLink, split } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { getMainDefinition } from '@apollo/client/utilities';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { ApolloClient, InMemoryCache, HttpLink, split } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { createFetchMultipartSubscription } from "@apollo/client/utilities/subscriptions/urql";
+import { createClient } from 'graphql-ws';
+
+const url = process.env.NEXT_PUBLIC_GRAPHQL_URL!
+const apiKey = process.env.NEXT_PUBLIC_API_KEY!;
+const websocketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL!
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+  uri: url,
+  headers: {
+    "x-api-key": apiKey,
+  },
 });
 
-const authLink = setContext((_, { headers }) => {
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  return {
-    headers: {
-      ...headers,
-      'x-api-key': apiKey,
-    },
-  };
-});
+const wsLink =
+  typeof window !== "undefined"
+    ? new GraphQLWsLink(
+      createClient({
+        url: websocketUrl,
+      })
+    )
+    : null;
 
-const wsLink = typeof window !== 'undefined'
-  ? new WebSocketLink({
-      uri: process.env.NEXT_PUBLIC_WEBSOCKET_URL!,
-      options: {
-        reconnect: true,
-        connectionParams: {
-          headers: {
-            'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
-          },
-        },
-      },
-    })
-  : null;
 
-const splitLink = typeof window !== 'undefined' && wsLink
-  ? split(
+const splitLink =
+  typeof window !== "undefined" && wsLink != null
+    ? split(
       ({ query }) => {
-        const definition = getMainDefinition(query);
+        const def = getMainDefinition(query);
         return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
+          def.kind === "OperationDefinition" &&
+          def.operation === "subscription"
         );
       },
       wsLink,
-      authLink.concat(httpLink)
+      httpLink
     )
-  : authLink.concat(httpLink);
+    : httpLink;
+
 
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache()
 });
 
 export default client;

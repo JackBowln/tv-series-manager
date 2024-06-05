@@ -1,3 +1,4 @@
+import type { EpisodeInput, UpdateEpisodeInput } from '@/types/index';
 import { gql } from '@apollo/client';
 
 export const GET_EPISODE_BY_ID = gql`
@@ -16,7 +17,7 @@ export const GET_EPISODE_BY_ID = gql`
 `;
 
 export const LIST_EPISODES = gql`
-  query ListEpisodes($search: String) {
+  query ListEpisodes($search: String = "") {
     listEpisodes(search: $search) {
       id
       series

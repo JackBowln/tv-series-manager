@@ -1,34 +1,36 @@
 "use client"
-import { ApolloProvider, useQuery } from '@apollo/client';
-import client from '@/lib/graphql/apollo-client';
-import { GET_EPISODE_BY_ID } from '@/lib/graphql/queries';
-import { Episode } from '@/types';
+import { ApolloProvider, useQuery } from "@apollo/client"
+import client from "@/lib/graphql/apollo-client"
+import EpisodeGrid from "@/components/EpisodeGrid"
+import SearchBar from "@/components/SearchBar"
+import NavBar from "@/components/NavBar"
+import { Container, Flex } from "@radix-ui/themes"
+import "@radix-ui/themes/styles.css"
+import { Theme } from "@radix-ui/themes"
+import { useState } from "react"
+import { Toaster } from "@/components/ui/toaster"
 
-const EpisodeComponent: React.FC<{ episodeId: string }> = ({ episodeId }) => {
-  const { loading, error, data } = useQuery(GET_EPISODE_BY_ID, {
-    variables: { episodeId },
-  });
+const Page: React.FC = () => {
+  const [search, setSearch] = useState("")
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  const episode: Episode = data.getEpisodeById;
-  
+  const handleChange = (e: { target: HTMLInputElement }) => {
+    const { value } = e.target
+    setSearch(value)
+  }
   return (
-    <div>
-      <h2>{episode.title}</h2>
-      <p>{episode.description}</p>
-      <p>Season: {episode.seasonNumber}, Episode: {episode.episodeNumber}</p>
-      <p>Release Date: {episode.releaseDate}</p>
-      <p>IMDB ID: {episode.imdbId}</p>
-    </div>
-  );
-};
+    <ApolloProvider client={client}>
+      <Theme>
+        <NavBar></NavBar>
+        <SearchBar value={search} onChange={handleChange} />
+        <Container className="mt-12">
+          <Flex gap="4" wrap="wrap">
+            <EpisodeGrid search={search} />
+          </Flex>
+        </Container>
+      </Theme>
+      <Toaster />
+    </ApolloProvider>
+  )
+}
 
-const Page: React.FC = () => (
-  <ApolloProvider client={client}>
-    <EpisodeComponent episodeId="1" />
-  </ApolloProvider>
-);
-
-export default Page;
+export default Page
