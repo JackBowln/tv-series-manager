@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# TV series manager
 
-First, run the development server:
+
+## Description
+
+This project is a web application that uses Apollo Client and GraphQL to provide a dynamic and reactive interface. Features include:
+
+- Real-time subscriptions using WebSockets
+- GraphQL queries and mutations
+- Modern and intuitive user interface
+
+
+## Features
+
+- **Real-time Reactivity**: The application updates automatically with real-time data thanks to GraphQL subscriptions.
+- **Queries and Mutations**: Full support for read and write operations on the GraphQL server.
+- **User-friendly Interface**: User interface designed with a focus on usability and user experience.
+
+
+## Technologies Used
+
+- **Frontend**: Next.js, Apollo
+- **Styling**: CSS, Tailwind
+- **Design**: Figma
+
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/JackBowln/tv-series-manager.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd tv-series-manager
+```
+
+3. Install the dependencies:
+
+```bash
+npm install
+```
+
+## Configuration
+
+Create a `.env` file in the root of the project with the following variables:
+
+```env
+
+NEXT_PUBLIC_OMDB_API_KEY="your-omdb-api-key" 
+NEXT_PUBLIC_OMDB_URL="http://www.omdbapi.com/"
+NEXT_PUBLIC_GRAPHQL_URL="http://your-graphql-endpoint" 
+NEXT_PUBLIC_WEBSOCKET_URL="ws://your-graphql-endpoint"
+NEXT_PUBLIC_API_KEY="api-key"
+
+```
+
+## Usage
+
+1. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design Screenshots
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+[Figma](https://www.figma.com/design/4Y3iMokdzoKr6Ojcu7qqgL/%40shadcn%2Fui---Design-System-(Community)?node-id=2-287&t=iHkunwn3Z4HUOT9T-1)
 
-## Learn More
+### Home Page
 
-To learn more about Next.js, take a look at the following resources:
+![Home Page](/screenshot-figma.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Create episode
+![Create episode](/screenshot-figma-2.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Episode details
+![Episode details](/screenshot-figma-3.png)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Contribution
+
+Feel free to open issues and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+With this README, you provide a clear overview of the project, installation and configuration instructions, and examples of code and design. Replace the placeholder links with the actual URLs for the screenshots and any other resources mentioned.
